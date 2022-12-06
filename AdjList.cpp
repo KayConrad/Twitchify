@@ -17,9 +17,12 @@ void AdjList::addEdge(Streamer s1, Streamer s2) {
 	}
 
 	// Append each streamer to the other streamer's list
-	graph[s1.getChannelID()].push_back(pair<int, int>(s2.getChannelID(), score));
-	graph[s2.getChannelID()].push_back(pair<int, int>(s1.getChannelID(), score));
+	if (score != 0) {
+		graph[s1.getChannelID()].push_back(pair<int, int>(s2.getChannelID(), score));
+		graph[s2.getChannelID()].push_back(pair<int, int>(s1.getChannelID(), score));
+	}
 }
+
 void AdjList::recommendStreamers(Streamer s1) {
 	// Goal: get the 5 most similiar streamers through a heap sort
 	vector<pair<int, int>> edges = graph[s1.getChannelID()];
@@ -37,7 +40,7 @@ void AdjList::recommendStreamers(Streamer s1) {
 	}
 }
 
-void heapifyDown(int index, vector<pair<int, int>>& edges) {
+void AdjList::heapifyDown(int index, vector<pair<int, int>>& edges) {
 	int leftInd = 2 * index + 1;
 	int rightInd = 2 * index + 2;
 	int biggest = index;
@@ -58,6 +61,14 @@ void heapifyDown(int index, vector<pair<int, int>>& edges) {
 			edges[index] = edges[biggest];
 			edges[biggest] = currInd;
 			heapifyDown(biggest, edges);
+		}
+	}
+}
+
+void AdjList::addStreamer(Streamer s) {
+	for (auto iter = legend.begin(); iter != legend.end(); iter++) {
+		if (s.getChannelID() != iter->first) {
+			addEdge(iter->second, s);
 		}
 	}
 }
