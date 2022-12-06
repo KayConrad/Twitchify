@@ -30,7 +30,7 @@ string Streamer::getLanguage() { return language; }
 
 // Streamer Comparison
 
-int Streamer::getScore(Streamer secondStreamer) {
+int Streamer::getScore(Streamer s2) {
 
 	int score = 0;
 	int startSize, endSize; // For Repeated Use
@@ -42,10 +42,10 @@ int Streamer::getScore(Streamer secondStreamer) {
 		sameGames.insert((this->games)[i]);
 	}
 	startSize = sameGames.size();
-	endSize = startSize;
-	for (int i = 0; i < (secondStreamer.getGames()).size(); i++) {
-		sameGames.insert((secondStreamer.getGames())[i]);
+	for (int i = 0; i < (s2.getGames()).size(); i++) {
+		sameGames.insert((s2.getGames())[i]);
 	}
+	endSize = sameGames.size();
 	score += ((endSize - startSize)*gameWeight);
 
 	// Get Score from Same Tags
@@ -55,18 +55,46 @@ int Streamer::getScore(Streamer secondStreamer) {
 		sameTags.insert((this->tags)[i]);
 	}
 	startSize = sameTags.size();
-	endSize = startSize;
-	for (int i = 0; i < (secondStreamer.getTags()).size(); i++) {
-		sameTags.insert((secondStreamer.getTags())[i]);
+	for (int i = 0; i < (s2.getTags()).size(); i++) {
+		sameTags.insert((s2.getTags())[i]);
 	}
+	endSize = sameTags.size();
 	score += ((endSize - startSize) * tagWeight);
 
 	// If Preferred Streamer is Immature, Recommend Only Immature
-	if (!(this->mature) && secondStreamer.getMature()) score = 0;
+	if (!(this->mature) && s2.getMature()) score = 0;
 
 	// If Language Does Not Match, Score is 0
-	if ((this->language).compare(secondStreamer.getLanguage()) != 0) score = 0;
+	if ((this->language).compare(s2.getLanguage()) != 0) score = 0;
 
 	return score;
+
+}
+
+// Print Streamer Info
+
+void Streamer::print() {
+
+	string pPrint, mPrint;
+	cout << "Channel ID: " << this->channelID << endl;
+	cout << "Average Viewers: " << this->averageViewers << endl;
+	cout << "Monthly Stream Time (hours): " << this->monthlyStreamTime << endl;
+	pPrint = (this->partnered) ? "TRUE" : "FALSE";
+	cout << "Partnered: " << pPrint << endl;
+	mPrint = (this->mature) ? "TRUE" : "FALSE";
+	cout << "Mature: " << mPrint << endl;
+	cout << "Games: ";
+	for (int i = 0; i < (this->games).size(); i++) {
+		cout << (this->games)[i];
+		if (i < (this->games).size() - 1) cout << ", ";
+	}
+	cout << endl;
+	cout << "Tags: ";
+	for (int i = 0; i < (this->tags).size(); i++) {
+		cout << (this->tags)[i];
+		if (i < (this->tags).size() - 1) cout << ", ";
+	}
+	cout << endl;
+	cout << "Language: " << this->language << endl << endl;
 
 }
