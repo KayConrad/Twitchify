@@ -15,7 +15,7 @@ Streamer::Streamer() {
 
 }
 
-Streamer::Streamer(int c, int a, int mo, bool p, bool ma, vector<string> g, vector<string> t, string l, Streamer* n) : channelID(c), averageViewers(a), monthlyStreamTime(mo), partnered(p), mature(ma), games(g), tags(t), language(l) {}
+Streamer::Streamer(int c, int a, int mo, bool p, bool ma, vector<string> g, vector<string> t, string l) : channelID(c), averageViewers(a), monthlyStreamTime(mo), partnered(p), mature(ma), games(g), tags(t), language(l) {}
 
 // Accessors
 
