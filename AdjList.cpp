@@ -30,11 +30,13 @@ void AdjList::recommendStreamers(Streamer s1) {
 		heapifyDown(i, edges);
 	}
 	for (int i = 0; i < 5; i++) {
-		Streamer recStreamer = legend[edges[i].first];
-		recStreamer.print();
-		edges[0] = edges[edges.size() - 1];
-		edges.pop_back();
-		heapifyDown(0, edges);
+		if (i < edges.size()) {
+			Streamer recStreamer = legend[edges[i].first];
+			recStreamer.print();
+			edges[0] = edges[edges.size() - 1];
+			edges.pop_back();
+			heapifyDown(0, edges);
+		}
 	}
 }
 
