@@ -2,7 +2,8 @@
 
 void AdjList::addEdge(Streamer s1, Streamer s2) {
 	// Find the similiarity score of the two streamers (it would be the same either way it's called)
-	int score = s1.getScore(s2);
+	int score1pref = s1.getScore(s2);
+	int score2pref = s2.getScore(s1);
 
 	// Make sure entries exist in the map for both streamers
 	if (graph.count(s1.getChannelID()) == 0) {
@@ -15,9 +16,12 @@ void AdjList::addEdge(Streamer s1, Streamer s2) {
 	}
 
 	// Append each streamer to the other streamer's list
-	if (score != 0) {
-		graph[s1.getChannelID()].push_back(pair<int, int>(s2.getChannelID(), score));
-		graph[s2.getChannelID()].push_back(pair<int, int>(s1.getChannelID(), score));
+	if (score1pref != 0) {
+		graph[s1.getChannelID()].push_back(pair<int, int>(s2.getChannelID(), score1pref));
+		
+	}
+	if (score2pref != 0) {
+		graph[s2.getChannelID()].push_back(pair<int, int>(s1.getChannelID(), score2pref));
 	}
 }
 
