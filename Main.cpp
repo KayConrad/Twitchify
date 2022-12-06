@@ -61,27 +61,20 @@ int main() {
 		}
 	}
 	else {
-		cout << "Could not open the file" << endl;
+		std::cout << "Could not open the file" << endl;
 	}
 
 
 
-	// Ask User for Preferred Streamer
-
-	cout << "Preferred Streamer (enter 0-99999): ";
-	int preferredStreamerID;
-	cin >> preferredStreamerID;
-	cout << endl;
-
 	// Ask User for Preferred Data Structure
 
-	cout << "Data Structure:" << endl;
-	cout << "1. Adjacency Matrix" << endl;
-	cout << "2. Adjacency List" << endl;
-	cout << "(enter 1 or 2): ";
+	std::cout << "Data Structure:" << endl;
+	std::cout << "1. Adjacency Matrix" << endl;
+	std::cout << "2. Adjacency List" << endl;
+	std::cout << "(enter 1 or 2): ";
 	int dataStructure;
 	cin >> dataStructure;
-	cout << endl;
+	std::cout << endl;
 
 
 
@@ -92,13 +85,15 @@ int main() {
 	// Instantiate an Empty Adjacency List Object
 	AdjList myList;
 
-	// Preferred Streamer
-	Streamer preferredStreamer;
-
 	
 
-	// Start the Timer
-	auto start = chrono::steady_clock::now();
+	// Start the Timer for the Data Structure
+	auto startA = chrono::steady_clock::now();
+
+
+
+	// Preferred Streamer ID
+	int preferredStreamerID;
 
 
 	
@@ -110,22 +105,36 @@ int main() {
 
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
-		for (int i = 1; i < content.size(); i++) {
+		for (int i = 1; i < content.size()+1; i++) {
 
 			Streamer myStreamer = newStreamer(content[i]);
 
-			// If myStreamer is the preferred streamer, save it to preferredStreamer
-			if (myStreamer.getChannelID() == preferredStreamerID) preferredStreamer = myStreamer;
-
 			// Add Streamer Object to the Matrix w/ a Similarity Score to Existing Streamer Objects in the Matrix
+			
 			// INSERT CODE HERE
 			// myMatrix.addStreamer(myStreamer);
 
+			if (i % 1000 == 0) std::cout << (i / 1000) << "%" << endl;
+
 		}
 
-		// Give streamer recommendations based on a given threshold
-		// INSERT CODE HERE
-		// myMatrix.recommendStreamers(preferredStreamer);
+		std::cout << endl;
+
+		do {
+
+			// Ask User for Preferred Streamer
+
+			std::cout << "Preferred Streamer (enter 0-99999): ";
+			cin >> preferredStreamerID;
+			std::cout << endl;
+
+			// Give streamer recommendations based on a given threshold
+
+			// INSERT CODE HERE
+			// myMatrix.recommendStreamers(preferredStreamerID);
+			std::cout << endl << endl;
+
+		} while (preferredStreamerID != -1);
 
 		break;
 
@@ -133,36 +142,51 @@ int main() {
 
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
-		for (int i = 1; i < content.size()+1; i++) { // DELETE
+		for (int i = 1; i < content.size()+1; i++) {
 
 			Streamer myStreamer = newStreamer(content[i]);
-
-			// If myStreamer is the preferred streamer, save it to preferredStreamer
-			// Print Preferred Streamer
-			if (myStreamer.getChannelID() == preferredStreamerID) { preferredStreamer = myStreamer; }
 
 			// Add Streamer Object to the List w/ a Similarity Score to Existing Streamer Objects in the Matrix
 			myList.addStreamer(myStreamer);
 
-			if(i % 1000 == 0) cout << (i/1000) << "%" << endl; // DELETE - Progress Bar
+			if (i % 1000 == 0) std::cout << (i / 1000) << "%" << endl;
 
 		}
 
-		cout << endl << endl; // DELETE
+		std::cout << endl;
 
-		// Give streamer recommendations based on a given threshold
-		myList.recommendStreamers(preferredStreamer);
+		// Data Structure Time End
+		auto endAL = chrono::steady_clock::now();
+		double elapsedTimeAL = double(chrono::duration_cast <chrono::nanoseconds> (endAL - startA).count());
+		std::cout << "Adjacency List Import Runtime (s) = " << elapsedTimeAL / 1e9 << endl << endl << endl << endl;
+
+		do {
+
+			// Ask User for Preferred Streamer
+
+			std::cout << "Preferred Streamer (enter 0-99999): ";
+			cin >> preferredStreamerID;
+			std::cout << endl;
+
+			if (preferredStreamerID == -1) break;
+
+			// Give streamer recommendations based on a given threshold w/ Timer
+
+			auto startAL = chrono::steady_clock::now();
+			
+			myList.recommendStreamers(preferredStreamerID);
+
+			endAL = chrono::steady_clock::now();
+			elapsedTimeAL = double(chrono::duration_cast <chrono::nanoseconds> (endAL - startAL).count());
+			std::cout << "Search Runtime (s) = " << elapsedTimeAL / 1e9 << endl << endl << endl << endl;
+
+		} while (preferredStreamerID != -1);
 
 		break;
 
 	}
 
-	// Get End Time
-	auto end = chrono::steady_clock::now();
-	double elapsedTime = double(chrono::duration_cast <chrono::nanoseconds> (end - start).count());
-	cout << "Total Runtime (s) = " << elapsedTime / 1e9 << endl;
-
-	system("pause");
+	std::system("pause");
 
 	return 0;
 
