@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <chrono>
 #include "AdjList.h"
 
 Streamer newStreamer(vector<string> info) {
@@ -65,7 +66,14 @@ int main() {
 
 
 
-	// Ask User for Data Structure Preference
+	// Ask User for Preferred Streamer
+
+	cout << "Preferred Streamer (enter 0-99999): ";
+	int preferredStreamerID;
+	cin >> preferredStreamerID;
+	cout << endl;
+
+	// Ask User for Preferred Data Structure
 
 	cout << "Data Structure:" << endl;
 	cout << "1. Adjacency Matrix" << endl;
@@ -77,53 +85,84 @@ int main() {
 
 
 
+	// Instantiate an Empty Adjacency Matrix Object
+	// INSERT CODE HERE
+	// AdjMatrix myMatrix;
+
+	// Instantiate an Empty Adjacency List Object
+	AdjList myList;
+
+	// Preferred Streamer
+	Streamer preferredStreamer;
+
+	
+
+	// Start the Timer
+	auto start = chrono::steady_clock::now();
+
+
+	
+	// Start the Implementation
+
 	switch (dataStructure) {
 
 	case 1: // Adjacency Matrix
-
-		// Instantiate an Adjacency Matrix Object
-		// INSERT CODE HERE
 
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
 		for (int i = 1; i < content.size(); i++) {
 
 			Streamer myStreamer = newStreamer(content[i]);
-			myStreamer.print(); // DELETE
+
+			// If myStreamer is the preferred streamer, save it to preferredStreamer
+			if (myStreamer.getChannelID() == preferredStreamerID) preferredStreamer = myStreamer;
 
 			// Add Streamer Object to the Matrix w/ a Similarity Score to Existing Streamer Objects in the Matrix
 			// INSERT CODE HERE
+			// myMatrix.addStreamer(myStreamer);
 
 		}
 
-		// Ask for which streamer they like and spit out the streamers recommended based on a given threshold
+		// Give streamer recommendations based on a given threshold
 		// INSERT CODE HERE
+		// myMatrix.recommendStreamers(preferredStreamer);
 
 		break;
 
 	case 2: // Adjacency List
 
-		// Instantiate an Adjacency List Object
-		// INSERT CODE HERE
-
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
-		for (int i = 1; i < content.size(); i++) {
+		for (int i = 1; i < content.size()+1; i++) { // DELETE
 
 			Streamer myStreamer = newStreamer(content[i]);
-			myStreamer.print(); // DELETE
+
+			// If myStreamer is the preferred streamer, save it to preferredStreamer
+			// Print Preferred Streamer
+			if (myStreamer.getChannelID() == preferredStreamerID) { preferredStreamer = myStreamer; }
 
 			// Add Streamer Object to the List w/ a Similarity Score to Existing Streamer Objects in the Matrix
-			// INSERT CODE HERE
+			myList.addStreamer(myStreamer);
+
+			if(i % 1000 == 0) cout << (i/1000) << "%" << endl; // DELETE - Progress Bar
 
 		}
 
-		// Ask for which streamer they like and spit out the streamers recommended based on a given threshold
-		// INSERT CODE HERE
+		cout << endl << endl; // DELETE
+
+		// Give streamer recommendations based on a given threshold
+		myList.recommendStreamers(preferredStreamer);
 
 		break;
 
 	}
+
+	// Get End Time
+	auto end = chrono::steady_clock::now();
+	double elapsedTime = double(chrono::duration_cast <chrono::nanoseconds> (end - start).count());
+	cout << "Total Runtime (s) = " << elapsedTime / 1e9 << endl;
+
+	system("pause");
 
 	return 0;
 
