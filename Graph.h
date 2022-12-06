@@ -4,11 +4,14 @@
 //
 
 #pragma once
+#include <unordered_map>
 #include "Streamer.h"
 
 
 class Graph
 {
+protected:
+    unordered_map<int, Streamer> legend;
 public:
     virtual void addEdge(Streamer s1, Streamer s2) = 0;
     virtual void recommendStreamers(int id) = 0;
