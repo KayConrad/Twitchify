@@ -3,8 +3,6 @@
 void AdjList::addEdge(Streamer s1, Streamer s2) {
 	// Find the similiarity score of the two streamers (it would be the same either way it's called)
 	int score = s1.getScore(s2);
-	legend.insert(pair<int, Streamer>(s1.getChannelID(), s1));
-	legend.insert(pair<int, Streamer>(s2.getChannelID(), s2));
 
 	// Make sure entries exist in the map for both streamers
 	if (graph.count(s1.getChannelID()) == 0) {
@@ -66,6 +64,7 @@ void AdjList::heapifyDown(int index, vector<pair<int, int>>& edges) {
 }
 
 void AdjList::addStreamer(Streamer s) {
+	legend.insert(pair<int, Streamer>(s.getChannelID(), s));
 	for (auto iter = legend.begin(); iter != legend.end(); iter++) {
 		if (s.getChannelID() != iter->first) {
 			addEdge(iter->second, s);
