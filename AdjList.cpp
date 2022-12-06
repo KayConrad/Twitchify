@@ -22,6 +22,12 @@ void AdjList::addEdge(Streamer s1, Streamer s2) {
 }
 
 void AdjList::recommendStreamers(Streamer s1) {
+	// Print Recommended Streamer Info
+	cout << "[Preferred Streamer]" << endl;
+	s1.print();
+	cout << endl;
+	cout << "[Recommended Streamers]" << endl;
+
 	// Goal: get the 5 most similiar streamers through a heap sort
 	vector<pair<int, int>> edges = graph[s1.getChannelID()];
 
