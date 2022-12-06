@@ -12,7 +12,7 @@ class AdjList :
     void heapifyDown(int index, vector<pair<int, int>>& edges);
 public:
     void addEdge(Streamer s1, Streamer s2);
-    void recommendStreamers(Streamer s1);
+    void recommendStreamers(int id);
     void addStreamer(Streamer s);
 };
 
