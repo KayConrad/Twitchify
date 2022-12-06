@@ -12,4 +12,5 @@ class Graph
 public:
     virtual void addEdge(Streamer s1, Streamer s2) = 0;
     virtual void recommendStreamers(Streamer s1) = 0;
+    virtual void addStreamer(Streamer s) = 0;
 };
