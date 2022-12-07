@@ -4,11 +4,11 @@
 
 #pragma once
 #include <vector>
-include "Graph.h"
+#include "Graph.h"
 
 class AdjMatrix : public Graph
 {
-    int[100000][100000] matrix;
+    unsigned char matrix[1000][1000];
     void heapifyDown(int index, vector<pair<int, int>>& edges);
 public:
     void addEdge(Streamer s1, Streamer s2);

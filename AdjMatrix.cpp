@@ -17,7 +17,7 @@ void AdjMatrix::recommendStreamers(int id)
     //Copy the weights into a vector that we treat as a Max Heap and pull the top 5 streamers from
     //This is not the same as the AdjList as it retains the empty slots
     vector<pair<int, int>> edges;
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 1000; i++)
     {
         edges.push_back(make_pair(i, matrix[id][i]));
     }
