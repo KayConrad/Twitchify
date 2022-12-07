@@ -2,6 +2,7 @@
 #include <sstream>
 #include <chrono>
 #include "AdjList.h"
+#include "AdjMatrix.h"
 
 Streamer newStreamer(vector<string> info) {
 
@@ -79,8 +80,7 @@ int main() {
 
 
 	// Instantiate an Empty Adjacency Matrix Object
-	// INSERT CODE HERE
-	// AdjMatrix myMatrix;
+	AdjMatrix myMatrix;
 
 	// Instantiate an Empty Adjacency List Object
 	AdjList myList;
@@ -89,6 +89,8 @@ int main() {
 
 	// Start the Timer for the Data Structure
 	auto startA = chrono::steady_clock::now();
+	auto endAM = startA;
+	double elapsedTimeAM = 0;
 
 
 
@@ -105,20 +107,23 @@ int main() {
 
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
-		for (int i = 1; i < content.size()+1; i++) {
+		for (int i = 1; i < 1001; i++) {
 
 			Streamer myStreamer = newStreamer(content[i]);
 
 			// Add Streamer Object to the Matrix w/ a Similarity Score to Existing Streamer Objects in the Matrix
-			
-			// INSERT CODE HERE
-			// myMatrix.addStreamer(myStreamer);
+			myMatrix.addStreamer(myStreamer);
 
-			if (i % 1000 == 0) std::cout << (i / 1000) << "%" << endl;
+			if (i % 10 == 0) std::cout << (i / 10) << "%" << endl;
 
 		}
 
 		std::cout << endl;
+
+		// Data Structure Time End
+		endAM = chrono::steady_clock::now();
+		elapsedTimeAM = double(chrono::duration_cast <chrono::nanoseconds> (endAM - startA).count());
+		std::cout << "Adjacency List Import Runtime (s) = " << elapsedTimeAM / 1e9 << endl << endl << endl << endl;
 
 		do {
 
@@ -128,11 +133,17 @@ int main() {
 			cin >> preferredStreamerID;
 			std::cout << endl;
 
-			// Give streamer recommendations based on a given threshold
+			if (preferredStreamerID == -1) break;
 
-			// INSERT CODE HERE
-			// myMatrix.recommendStreamers(preferredStreamerID);
-			std::cout << endl << endl;
+			// Give streamer recommendations based on a given threshold w/ Timer
+
+			auto startAM = chrono::steady_clock::now();
+
+			myMatrix.recommendStreamers(preferredStreamerID);
+
+			endAM = chrono::steady_clock::now();
+			elapsedTimeAM = double(chrono::duration_cast <chrono::nanoseconds> (endAM - startAM).count());
+			std::cout << "Search Runtime (s) = " << elapsedTimeAM / 1e9 << endl << endl << endl << endl;
 
 		} while (preferredStreamerID != -1);
 
@@ -142,14 +153,14 @@ int main() {
 
 		// Loop through content and prep Streamer Object
 		// Start at i = 1 to ignore the title row
-		for (int i = 1; i < content.size()+1; i++) {
+		for (int i = 1; i < 1001; i++) {
 
 			Streamer myStreamer = newStreamer(content[i]);
 
 			// Add Streamer Object to the List w/ a Similarity Score to Existing Streamer Objects in the Matrix
 			myList.addStreamer(myStreamer);
 
-			if (i % 1000 == 0) std::cout << (i / 1000) << "%" << endl;
+			if (i % 10 == 0) std::cout << (i / 10) << "%" << endl;
 
 		}
 
