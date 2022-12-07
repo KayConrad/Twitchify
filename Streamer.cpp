@@ -36,33 +36,37 @@ int Streamer::getScore(Streamer s2) {
 	int startSize, endSize; // For Repeated Use
 	
 	// Get Score from Same Games
-	int gameWeight = 10; // Each Similar Game Adds 10 Points
+	int gameWeight = 9; // Each Similar Game Adds 9 Points
 	set<string> sameGames;
 	for (int i = 0; i < (this->games).size(); i++) {
 		sameGames.insert((this->games)[i]);
 	}
-	startSize = sameGames.size();
+	startSize = (int)sameGames.size();
 	for (int i = 0; i < (s2.getGames()).size(); i++) {
 		sameGames.insert((s2.getGames())[i]);
 	}
-	endSize = sameGames.size();
-	score += ((endSize - startSize)*gameWeight);
+	endSize = (int)sameGames.size();
+	score += ((startSize-(endSize - startSize)) * gameWeight);
 
 	// Get Score from Same Tags
-	int tagWeight = 5; // Each Similar Tag Adds 5 Points
+	int tagWeight = 4; // Each Similar Tag Adds 4 Points
 	set<string> sameTags;
 	for (int i = 0; i < (this->tags).size(); i++) {
 		sameTags.insert((this->tags)[i]);
 	}
-	startSize = sameTags.size();
+	startSize = (int)sameTags.size();
 	for (int i = 0; i < (s2.getTags()).size(); i++) {
 		sameTags.insert((s2.getTags())[i]);
 	}
-	endSize = sameTags.size();
-	score += ((endSize - startSize) * tagWeight);
+	endSize = (int)sameTags.size();
+	score += ((startSize-(endSize - startSize)) * tagWeight);
 
 	// If Preferred Streamer is Immature, Recommend Only Immature
-	if (!(this->mature) && s2.getMature()) score = 0;
+	if (!(this->mature)) {
+		if (s2.getMature()) {
+			score = 0;
+		}
+	}
 
 	// If Language Does Not Match, Score is 0
 	if ((this->language).compare(s2.getLanguage()) != 0) score = 0;
